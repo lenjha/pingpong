@@ -1,12 +1,14 @@
 //dependencies to load
+var del = require("del");
 var gulp = require("gulp");
 var browserify = require("browserify");
 var source = require("vinyl-source-stream");
 var concat = require("gulp-concat");
 var uglify = require("gulp-uglify");
 var utilities = require("gulp-util");
-var del = require("del");
 var jshint = require("gulp-jshint");
+var lib = require("bower-files")();
+// var moment = require("moment");
 
 var buildProduction = utilities.env.production;
 
@@ -34,12 +36,16 @@ gulp.task("minifyScripts", ["jsBrowserify"], function() {
   .pipe(gulp.dest("./build/js"));
 });
 
-gulp.task("build", function() {
-  if (buildProduction) {
-    gulp.start("minifyScripts");
-  } else {
-    gulp.start("jsBrowserify");
-  }
+// gulp.task("build", function() {
+//   if (buildProduction) {
+//     gulp.start("minifyScripts");
+//   } else {
+//     gulp.start("jsBrowserify");
+//   }
+// });
+
+gulp.task("clean", function () {
+  return del(["build", "tmp"]);
 });
 
 gulp.task("build", ["clean"], function() {
@@ -55,6 +61,19 @@ gulp.task("jshint", function(){
     .pipe(jshint())
     .pipe(jshint.reporter("default"));
 });
+
+gulp.task("bowerJS", function() {
+  return gulp.src(lib.ext("js").files)
+    .pipe(concat("vendor.min.js"))
+    .pipe(uglify())
+    .pipe(gulp.dest("./build/js"));
+});
+
+// gulp.task("moment", function(){
+//   return gulp.src(["./js/time-interface.js"])
+//     .pipe(moment())
+//     .pipe(gulp.dest("./js"));
+// });
 
 // //callback functions
 // gulp.task(name, function() {

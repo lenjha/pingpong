@@ -21,7 +21,7 @@ Calculator.prototype.pingPong = function(goal) {
     }
   }
   return output;
-}
+};
 
 exports.calculatorModule = Calculator;
 
@@ -38,6 +38,19 @@ $(document).ready(function() {
       $("#solution").append("<li>" + element + "</li>");
     });
   });
+});
+
+$(document).ready(function() {
+  $("#signup").submit(function(event) {
+    event.preventDefault();
+    var email = $("#email").val();
+    $("#signup").hide();
+    $("#solution").prepend("<p>" + email + " has been added to my list! </p>");
+  });
+});
+
+$(document).ready(function(){
+  $('#time').text(moment());
 });
 
 },{"./../js/pingpong.js":1}]},{},[2]);
